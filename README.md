@@ -104,5 +104,5 @@ Welcome to contribute to ConneX! Please follow these steps:
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## 联系方式 / Contact
-如有问题，请通过 [GitHub Issues](https://github.com/colinwps/ConneX/issues) 提交或联系我们：your-email@example.com。  
+如有问题，请通过 [GitHub Issues](https://github.com/colinwps/ConneX/issues) 提交或联系我们：colinapp@hotmail.com。  
 For any issues, please submit via [GitHub Issues](https://github.com/colinwps/ConneX/issues) or contact us at: colinapp@hotmail.com.
