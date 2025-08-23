@@ -1,103 +1,197 @@
-import Image from "next/image";
+"use client"; // 客户端组件
 
-export default function Home() {
+import { useState, useCallback } from "react";
+import Particles from "react-tsparticles";
+import { loadSlim } from "tsparticles-slim";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    // 简单前端验证
+    if (!email || !password) {
+      setError("邮箱和密码不能为空");
+      return;
+    }
+
+    // 模拟登录请求
+    try {
+      console.log("登录中:", { email, password });
+      alert("登录成功！");
+    } catch (err) {
+      setError("登录失败，请检查账号或密码");
+    }
+  };
+
+  // 初始化 tsParticles
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesLoaded = useCallback(async (container: any) => {
+    console.log("Particles loaded:", container);
+  }, []);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* tsParticles 背景 with 科幻特效 */}
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          fullScreen: { enable: true, zIndex: -1 },
+          background: {
+            color: { value: "#0a0b1e" }, // 深邃的太空蓝黑色背景
+          },
+          fpsLimit: 120,
+          interactivity: {
+            events: {
+              onClick: { enable: true, mode: "push" },
+              onHover: { enable: true, mode: "connect" },
+              resize: true,
+            },
+            modes: {
+              push: { quantity: 3 },
+              connect: { distance: 200, radius: 400, links: { opacity: 0.7 } },
+            },
+          },
+          particles: {
+            color: { value: ["#40c4ff", "#00e5ff", "#ff4081"] }, // 霓虹蓝和粉色
+            links: {
+              color: "#00e5ff",
+              distance: 150,
+              enable: true,
+              opacity: 0.4,
+              width: 1.5,
+              shadow: { blur: 5, color: "#00e5ff", enable: true }, // 发光连接线
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outModes: { default: "bounce" },
+              random: true,
+              speed: { min: 1, max: 3 },
+              straight: false,
+              attract: { enable: true, rotateX: 600, rotateY: 1200 },
+            },
+            number: {
+              density: { enable: true, area: 800 },
+              value: 100,
+            },
+            opacity: {
+              value: { min: 0.3, max: 0.8 },
+              animation: {
+                enable: true,
+                speed: 1,
+                minimumValue: 0.2,
+                sync: false,
+              },
+            },
+            shape: {
+              type: ["circle", "polygon"],
+              polygon: { nb_sides: 6 }, // 六边形粒子，增加科幻感
+            },
+            size: {
+              value: { min: 1, max: 4 },
+              animation: {
+                enable: true,
+                speed: 10,
+                minimumValue: 0.5,
+                sync: false,
+              },
+            },
+            twinkle: {
+              particles: {
+                enable: true,
+                frequency: 0.05,
+                opacity: 1,
+              },
+            },
+            glow: {
+              enable: true,
+              color: "#00e5ff",
+              radius: 10,
+            },
+          },
+          detectRetina: true,
+        }}
+        className="absolute inset-0"
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+      {/* 渐变覆盖层，确保文字可读性 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/40 via-indigo-950/40 to-purple-950/40"></div>
+
+      <div className="relative z-10 max-w-md w-full bg-black/80 backdrop-blur-xl p-10 rounded-2xl shadow-2xl border border-blue-500/30">
+        <h2 className="text-4xl font-extrabold mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+          ConneX 登录
+        </h2>
+        <p className="text-center text-blue-300 mb-8 text-lg">连接一切，探索未来</p>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-blue-200"
+            >
+              邮箱
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-2 w-full px-4 py-3 bg-gray-900/50 border border-blue-500/50 text-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all placeholder-blue-700"
+              placeholder="请输入邮箱"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-blue-200"
+            >
+              密码
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-2 w-full px-4 py-3 bg-gray-900/50 border border-blue-500/50 text-blue-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all placeholder-blue-700"
+              placeholder="请输入密码"
+            />
+          </div>
+
+          {error && (
+            <p className="text-red-400 text-sm font-medium animate-pulse">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-blue-500/50"
           >
-            Read our docs
+            登录
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-blue-300">
+          还没有账号？{" "}
+          <a
+            href="/signup"
+            className="text-blue-400 hover:text-blue-200 font-medium"
+          >
+            立即注册
           </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </p>
+      </div>
     </div>
   );
 }
